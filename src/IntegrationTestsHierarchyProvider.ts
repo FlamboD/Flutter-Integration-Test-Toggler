@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { FoodPyramid, FoodRelation } from './model';
+import { FlutterIntegrationTest, FlutterIntegrationTestsFile, FoodPyramid, FoodRelation } from './model';
 
 export class InteegrationTestHierarchyProvider implements vscode.CallHierarchyProvider {
 
@@ -92,6 +92,24 @@ class FoodPyramidParser {
 	private _model = new FoodPyramid();
 
 	getModel(): FoodPyramid {
+		return this._model;
+	}
+
+	parse(textDocument: vscode.TextDocument): void {
+		const pattern = /^(\w+)\s+(\w+)\s+(\w+).$/gm;
+		let match: RegExpExecArray | null;
+		while ((match = pattern.exec(textDocument.getText()))) {
+			const startPosition = textDocument.positionAt(match.index);
+			const range = new vscode.Range(startPosition, startPosition.translate({ characterDelta: match[0].length }));
+			this._model.addRelation(new FoodRelation(match[1], match[2], match[3], match[0], range));
+		}
+	}
+}
+
+class FlutterIntegrationTestParser {
+	private _model = new FlutterIntegrationTestsFile();
+
+	getModel(): FlutterIntegrationTestsFile {
 		return this._model;
 	}
 

@@ -1,5 +1,20 @@
 import * as vscode from 'vscode';
 
+export class FlutterIntegrationTestsFile {
+	private _groups = new Set<FlutterIntegrationGroup>();
+}
+
+export class FlutterIntegrationGroup {
+	private _name = ""; 
+	private _groups = new Set<FlutterIntegrationGroup>();
+	private _tests = new Set<FlutterIntegrationTest>();
+}
+
+export class FlutterIntegrationTest {
+	private _name = "";
+	private _isEnabled = false;
+}
+
 /**
  * Sample model of what the text in the document contains.
  */
